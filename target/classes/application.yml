@@ -1,8 +1,36 @@
-#
-# application.yml — главный конфигурационный файл Spring Boot.
+server:
+  port: 8081
 
-Что нужно сделать:
-  - Указать настройки подключения к базе данных.
-  - Указать порт приложения.
-  - Настроить параметры безопасности и JWT.
-  - Включить Swagger UI.
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bankcardsdb
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  liquibase:
+    change-log: classpath:db/migration/db.changelog-master.yaml
+
+jwt:
+  secret: verySecretKeyExample1234567890verySecretKeyExample1234567890verySecretKeyExample1234567890
+  access-token-expiration-ms: 3600000     # 1 час
+  refresh-token-expiration-ms: 604800000  # 7 дней
+
+logging:
+  level:
+    root: INFO
+    org.springframework.security: DEBUG
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
