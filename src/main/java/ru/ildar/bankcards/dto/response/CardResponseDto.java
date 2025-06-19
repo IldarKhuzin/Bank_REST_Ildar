@@ -1,6 +1,5 @@
-package ru.ildar.bankcards.dto.responce;
+package ru.ildar.bankcards.dto.response;
 
-import jdk.jshell.Snippet;
 import lombok.*;
 import ru.ildar.bankcards.entity.CardStatus;
 

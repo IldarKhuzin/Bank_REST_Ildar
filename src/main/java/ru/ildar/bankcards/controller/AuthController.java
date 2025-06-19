@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.ildar.bankcards.dto.request.LoginDto;
-import ru.ildar.bankcards.dto.responce.JwtResponseDto;
+import ru.ildar.bankcards.dto.response.JwtResponseDto;
 import ru.ildar.bankcards.service.AuthService;
 
 @RestController

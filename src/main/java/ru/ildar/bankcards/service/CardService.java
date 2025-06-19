@@ -3,7 +3,7 @@ package ru.ildar.bankcards.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import ru.ildar.bankcards.dto.request.CardCreateDto;
-import ru.ildar.bankcards.dto.responce.CardResponseDto;
+import ru.ildar.bankcards.dto.response.CardResponseDto;
 import ru.ildar.bankcards.entity.Card;
 import ru.ildar.bankcards.exception.CardOperationException;
 
@@ -27,5 +27,5 @@ public interface CardService {
 
     Page<CardResponseDto> getUserCards(int page, int size);
 
-    void requestCardBlock(Long id);
+    void requestCardBlock(UUID id);
 }

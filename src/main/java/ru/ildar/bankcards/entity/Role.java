@@ -5,6 +5,6 @@ public enum Role {
     ROLE_ADMIN;
 
     public Object getName() {
-        return null;
+        return name();
     }
 }

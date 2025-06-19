@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.ildar.bankcards.dto.request.LoginDto;
-import ru.ildar.bankcards.dto.responce.JwtResponseDto;
+import ru.ildar.bankcards.dto.response.JwtResponseDto;
 import ru.ildar.bankcards.security.JwtTokenProvider;
 
 @Service

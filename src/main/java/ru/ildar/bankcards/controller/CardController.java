@@ -8,7 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.ildar.bankcards.dto.request.CardCreateDto;
 import ru.ildar.bankcards.dto.request.TransferRequestDto;
-import ru.ildar.bankcards.dto.responce.CardResponseDto;
+import ru.ildar.bankcards.dto.response.CardResponseDto;
 import ru.ildar.bankcards.service.CardService;
 import ru.ildar.bankcards.service.TransferService;
 
@@ -29,19 +29,16 @@ public class CardController {
         return ResponseEntity.ok(cardService.createCard(dto));
     }
 
-    // ADMIN: блокировка, активация, удаление карты
     @PutMapping("/{id}/block")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> blockCard(@PathVariable UUID id) {
         cardService.blockCard(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build(); // 204 без тела
     }
 
     @PutMapping("/{id}/activate")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> activateCard(@PathVariable UUID id) {
-        cardService.activateCard(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<CardResponseDto> activateCard(@PathVariable UUID id) {
+        return ResponseEntity.ok(cardService.activateCard(id));
     }
 
     @DeleteMapping("/{id}")
@@ -63,7 +60,7 @@ public class CardController {
     // USER: запрос блокировки своей карты
     @PostMapping("/{id}/request-block")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Void> requestCardBlock(@PathVariable Long id) {
+    public ResponseEntity<Void> requestCardBlock(@PathVariable UUID id) {
         cardService.requestCardBlock(id);
         return ResponseEntity.ok().build();
     }

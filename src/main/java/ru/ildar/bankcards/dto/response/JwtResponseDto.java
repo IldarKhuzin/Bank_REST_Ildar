@@ -1,4 +1,4 @@
-package ru.ildar.bankcards.dto.responce;
+package ru.ildar.bankcards.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

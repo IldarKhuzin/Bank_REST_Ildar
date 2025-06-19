@@ -2,10 +2,11 @@ package ru.ildar.bankcards.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.ildar.bankcards.dto.request.CardCreateDto;
-import ru.ildar.bankcards.dto.responce.CardResponseDto;
+import ru.ildar.bankcards.dto.response.CardResponseDto;
 import ru.ildar.bankcards.entity.Card;
 import ru.ildar.bankcards.entity.CardStatus;
 import ru.ildar.bankcards.entity.User;
@@ -14,8 +15,7 @@ import ru.ildar.bankcards.repository.CardRepository;
 import ru.ildar.bankcards.repository.UserRepository;
 import ru.ildar.bankcards.util.CardNumberEncryptor;
 import ru.ildar.bankcards.util.CardNumberMasker;
-import ru.ildar.bankcards.dto.responce.CardResponseDto;
-
+import ru.ildar.bankcards.util.SecurityUtil;
 
 import java.util.UUID;
 
@@ -168,11 +168,35 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Page<CardResponseDto> getUserCards(int page, int size) {
-        throw new UnsupportedOperationException("Метод getUserCards(page, size) пока не реализован");
+        // Получаем username из контекста безопасности
+        // Здесь лучше прокинуть username из SecurityContext в контроллер, но для примера:
+        String username = SecurityUtil.getCurrentUsername()
+                .orElseThrow(() -> new CardOperationException("Пользователь не аутентифицирован"));
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return getCardsForUser(username, pageable);
     }
 
     @Override
-    public void requestCardBlock(Long id) {
-        throw new UnsupportedOperationException("Метод requestCardBlock(id) пока не реализован");
+    public void requestCardBlock(UUID id) {
+        // Проверяем, что карта принадлежит текущему пользователю
+        Card card = getCardEntityById(id);
+
+        String username = SecurityUtil.getCurrentUsername()
+                .orElseThrow(() -> new CardOperationException("Пользователь не аутентифицирован"));
+
+        if (!card.getOwner().getUsername().equals(username)) {
+            throw new CardOperationException("Нет доступа к данной карте");
+        }
+
+        // Логика заявки на блокировку карты (например, можно создать задачу, отправить уведомление)
+        // Пока просто меняем статус на BLOCKED с каким-то условием
+        if (card.getStatus() == CardStatus.BLOCKED) {
+            throw new CardOperationException("Карта уже заблокирована");
+        }
+
+        card.setStatus(CardStatus.BLOCKED);
+        cardRepository.save(card);
     }
 }
