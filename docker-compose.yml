@@ -6,11 +6,11 @@ services:
     container_name: bankcards-db
     restart: always
     environment:
-      POSTGRES_DB: bankcards
-      POSTGRES_USER: bankuser
-      POSTGRES_PASSWORD: bankpass
+      POSTGRES_DB: bankcardsdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -25,10 +25,7 @@ services:
     depends_on:
       - bankcards-db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://bankcards-db:5432/bankcards
-      SPRING_DATASOURCE_USERNAME: bankuser
-      SPRING_DATASOURCE_PASSWORD: bankpass
-      SPRING_PROFILES_ACTIVE: prod
+      SPRING_PROFILES_ACTIVE: dev
     ports:
       - "8081:8081"
     networks:

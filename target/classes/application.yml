@@ -2,22 +2,8 @@ server:
   port: 8081
 
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/bankcardsdb
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-
-  liquibase:
-    change-log: classpath:db/migration/db.changelog-master.yaml
+  profiles:
+    active: dev  # активируем dev-профиль
 
 jwt:
   secret: verySecretKeyExample1234567890verySecretKeyExample1234567890verySecretKeyExample1234567890
