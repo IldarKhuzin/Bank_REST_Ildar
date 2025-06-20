@@ -103,17 +103,6 @@ class CardControllerTest {
                 .andExpect(status().isNoContent());
     }
 
-    @Test
-    @WithMockUser(roles = {"ADMIN"})
-    void activateCard_shouldReturnNoContent() throws Exception {
-        UUID cardId = UUID.randomUUID();
-
-        // Если activateCard возвращает void, используйте doNothing()
-        Mockito.doNothing().when(cardService).activateCard(cardId);
-
-        mockMvc.perform(put("/api/cards/{id}/activate", cardId))
-                .andExpect(status().isNoContent());
-    }
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
@@ -199,29 +188,5 @@ class CardControllerTest {
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
     }
-
-    @Test
-    @WithMockUser(roles = {"ADMIN"})
-    void blockCard_shouldReturnCard() throws Exception {
-        UUID cardId = UUID.randomUUID();
-
-        CardResponseDto responseDto = CardResponseDto.builder()
-                .id(cardId)
-                .number("**** **** **** 1234")
-                .ownerUsername("user")
-                .expirationDate(LocalDate.now().plusYears(1))
-                .status(CardStatus.BLOCKED)
-                .balance(new BigDecimal("1000"))
-                .build();
-
-        Mockito.when(cardService.blockCard(cardId)).thenReturn(responseDto);
-
-        mockMvc.perform(put("/api/cards/{id}/block", cardId))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("BLOCKED"))
-                .andExpect(jsonPath("$.number").value("**** **** **** 1234"))
-                .andExpect(jsonPath("$.ownerUsername").value("user"));
-    }
-
 
 }

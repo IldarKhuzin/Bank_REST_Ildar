@@ -199,4 +199,4 @@ public class CardServiceImpl implements CardService {
         card.setStatus(CardStatus.BLOCKED);
         cardRepository.save(card);
     }
-}
+}                              
